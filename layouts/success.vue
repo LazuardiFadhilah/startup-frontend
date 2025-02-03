@@ -1,3 +1,3 @@
 <template>
-  <div class="success-page"><Nuxt /></div>
+  <div class="success-page"><slot /></div>
 </template>

@@ -4,8 +4,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxtjs/tailwindcss"],
   app: {
+    baseURL: "/",
     head: {
       title: "Nuxt TailwindCSS",
+
       link: [
         {
           rel: "stylesheet",
