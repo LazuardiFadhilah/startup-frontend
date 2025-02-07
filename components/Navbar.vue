@@ -28,23 +28,63 @@
         >
       </li>
     </ul>
+
     <ul class="flex ml-auto items-center mt-2">
       <li>
         <nuxt-link
+          v-if="!isLoggedIn"
           to="/register"
           class="inline-block bg-transparent border-white border hover:bg-white hover:bg-opacity-25 text-white font-light w-40 text-center px-6 py-1 text-lg rounded-full mr-4"
         >
           Sign Up
         </nuxt-link>
       </li>
+
       <li>
         <nuxt-link
+          v-if="!isLoggedIn"
           to="/login"
           class="inline-block bg-transparent border-white border hover:bg-white hover:bg-opacity-25 text-white font-light w-40 text-center px-6 py-1 text-lg rounded-full"
         >
           My Account
         </nuxt-link>
+
+        <button
+          v-else
+          @click="logout"
+          class="inline-block bg-transparent border-white border hover:bg-white hover:bg-opacity-25 text-white font-light w-40 text-center px-6 py-1 text-lg rounded-full"
+        >
+          Logout
+        </button>
       </li>
     </ul>
   </header>
 </template>
+
+<script setup>
+import { ref, computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const token = ref(null);
+
+// Cek token saat komponen dimuat
+onMounted(() => {
+  token.value = localStorage.getItem("token");
+
+  // Deteksi perubahan token (misal saat login/logout di tab lain)
+  window.addEventListener("storage", () => {
+    token.value = localStorage.getItem("token");
+  });
+});
+
+// Status login
+const isLoggedIn = computed(() => !!token.value);
+
+// Fungsi logout
+const logout = () => {
+  localStorage.removeItem("token");
+  token.value = null;
+  router.push("/login"); // Redirect ke halaman login setelah logout
+};
+</script>
