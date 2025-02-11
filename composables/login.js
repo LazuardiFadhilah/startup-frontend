@@ -5,7 +5,6 @@ export function useAuth() {
   const password = ref("");
   const showAlert = ref(false);
   const errorMessage = ref("");
-  const router = useRouter();
 
   const login = async () => {
     try {
@@ -19,6 +18,7 @@ export function useAuth() {
       console.log("Login berhasil:", response);
       if (response?.data?.token) {
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user_id", response.data.id);
         navigateTo("/");
       } else {
         console.error("Token tidak ditemukan", response);

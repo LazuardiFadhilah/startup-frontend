@@ -85,6 +85,6 @@ const isLoggedIn = computed(() => !!token.value);
 const logout = () => {
   localStorage.removeItem("token");
   token.value = null;
-  router.push("/login"); // Redirect ke halaman login setelah logout
+  router.push("/"); // Redirect ke halaman login setelah logout
 };
 </script>
