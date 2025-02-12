@@ -19,6 +19,8 @@ export function useAuth() {
       if (response?.data?.token) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user_id", response.data.id);
+        localStorage.setItem("image_url", response.data.image_url);
+        localStorage.setItem("name", response.data.name);
         navigateTo("/");
       } else {
         console.error("Token tidak ditemukan", response);

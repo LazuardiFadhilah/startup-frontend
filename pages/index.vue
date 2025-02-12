@@ -89,16 +89,19 @@
           </h2>
         </div>
         <div class="w-auto mt-5">
-          <a class="text-gray-900 hover:underline text-md font-medium" href=""
-            >View All</a
+          <button
+            @click="toggleViewAll"
+            class="text-gray-900 hover:underline text-md font-medium"
           >
+            {{ viewAll ? "View less" : "View All" }}
+          </button>
         </div>
       </div>
 
       <!-- Project card -->
       <div class="grid grid-cols-3 gap-4 mt-3">
         <div
-          v-for="campaign in formattedCampaigns"
+          v-for="campaign in limitedCampaigns"
           :key="campaign.id"
           class="card-project w-full lg:h-[550px] p-5 border border-gray-500 rounded-20"
         >
@@ -212,8 +215,19 @@
 import { useCampaigns } from "~/composables/getCampaigns";
 import { computed } from "vue";
 import { useCurrency } from "~/composables/useCurrency";
+const viewAll = ref(false);
 const { campaigns, getCampaignsData } = useCampaigns();
 const { formatCurrency, calculatePercentage } = useCurrency();
+
+const limitedCampaigns = computed(() =>
+  viewAll.value
+    ? formattedCampaigns.value
+    : formattedCampaigns.value?.slice(0, 3)
+);
+
+const toggleViewAll = () => {
+  viewAll.value = !viewAll.value;
+};
 const formattedCampaigns = computed(() =>
   campaigns.value?.map((campaign) => ({
     ...campaign,

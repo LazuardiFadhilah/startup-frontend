@@ -29,10 +29,9 @@
       </li>
     </ul>
 
-    <ul class="flex ml-auto items-center mt-2">
+    <ul v-if="!isLoggedIn" class="flex ml-auto items-center mt-2">
       <li>
         <nuxt-link
-          v-if="!isLoggedIn"
           to="/register"
           class="inline-block bg-transparent border-white border hover:bg-white hover:bg-opacity-25 text-white font-light w-40 text-center px-6 py-1 text-lg rounded-full mr-4"
         >
@@ -42,22 +41,75 @@
 
       <li>
         <nuxt-link
-          v-if="!isLoggedIn"
           to="/login"
           class="inline-block bg-transparent border-white border hover:bg-white hover:bg-opacity-25 text-white font-light w-40 text-center px-6 py-1 text-lg rounded-full"
         >
           My Account
         </nuxt-link>
 
-        <button
+        <!-- <button
           v-else
           @click="logout"
           class="inline-block bg-transparent border-white border hover:bg-white hover:bg-opacity-25 text-white font-light w-40 text-center px-6 py-1 text-lg rounded-full"
         >
           Logout
-        </button>
+        </button> -->
       </li>
     </ul>
+    <div class="flex ml-auto" v-else>
+      <div
+        class="dropdown inline-block relative z-10"
+        @mouseenter="showDropdown"
+        @mouseleave="hideDropdown"
+      >
+        <button
+          class="bg-white text-gray-700 font-semibold py-4 px-6 rounded inline-flex items-center"
+        >
+          <img
+            v-if="imageURL"
+            :src="'http://localhost:8080/' + imageURL"
+            alt=""
+            class="h-8 rounded-full mr-2"
+          />
+          <span class="mr-1">{{ name }} </span>
+          <svg
+            class="fill-current h-4 w-4"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+            />
+          </svg>
+        </button>
+        <ul
+          v-show="isDropdownVisible"
+          class="dropdown-menu absolute text-gray-700 pt-1 shadow w-full -mt-2 transition-opacity duration-500 ease-in-out rounded-lg"
+        >
+          <li>
+            <nuxt-link
+              to="/dashboard"
+              class="bg-white hover:bg-gray-100 hover:text-orange-500 py-2 px-4 block whitespace-no-wrap"
+              >Dashboard</nuxt-link
+            >
+          </li>
+          <li>
+            <nuxt-link
+              to="/dashboard"
+              class="bg-white hover:bg-gray-100 hover:text-orange-500 py-2 px-4 block whitespace-no-wrap"
+              >Account Setting</nuxt-link
+            >
+          </li>
+          <li>
+            <a
+              @click="logout"
+              class="cursor-pointer rounded-b bg-white hover:bg-gray-100 hover:text-orange-500 py-2 px-4 block whitespace-no-wrap"
+              >Logout</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
   </header>
 </template>
 
@@ -65,16 +117,36 @@
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
+const isDropdownVisible = ref(false);
+let hideTimeout = null;
+
+const showDropdown = () => {
+  clearTimeout(hideTimeout);
+  isDropdownVisible.value = true;
+};
+
+const hideDropdown = () => {
+  hideTimeout = setTimeout(() => {
+    isDropdownVisible.value = false;
+  }, 500);
+};
+
 const router = useRouter();
 const token = ref(null);
+const imageURL = ref(null);
+const name = ref(null);
 
 // Cek token saat komponen dimuat
 onMounted(() => {
   token.value = localStorage.getItem("token");
+  imageURL.value = localStorage.getItem("image_url");
+  name.value = localStorage.getItem("name");
 
   // Deteksi perubahan token (misal saat login/logout di tab lain)
   window.addEventListener("storage", () => {
     token.value = localStorage.getItem("token");
+    imageURL.value = localStorage.getItem("image_url");
+    name.value = localStorage.getItem("name");
   });
 });
 
@@ -83,8 +155,14 @@ const isLoggedIn = computed(() => !!token.value);
 
 // Fungsi logout
 const logout = () => {
-  localStorage.removeItem("token");
+  localStorage.clear();
   token.value = null;
   router.push("/"); // Redirect ke halaman login setelah logout
 };
 </script>
+
+<style scoped>
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+</style>
