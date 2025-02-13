@@ -38,24 +38,38 @@ export function useUpload() {
         },
       });
 
-      // Cek apakah response sukses
-      if (!response.ok) {
-        const errorResult = await response.json();
-        console.error("Upload avatar gagal:", errorResult);
-        errorMessage.value = errorResult.message || "Upload avatar gagal!";
-        showAlert.value = true;
-        return;
-      }
+      //   // Pastikan response status benar sebelum memproses lebih lanjut
+      //   if (!response.ok) {
+      //     const errorResult = await response.json();
+      //     throw new Error(errorResult.meta?.message || "Upload gagal!");
+      //   }
 
       const result = await response.json();
       console.log("Upload avatar berhasil:", result);
 
-      localStorage.setItem("image_url", result.data.image_url);
+      // Fetch data user setelah upload berhasil
+      const currentUser = await fetch(
+        "http://localhost:8080/api/v1/users/fetch",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (!currentUser.ok) {
+        throw new Error("Gagal mengambil data user terbaru");
+      }
+
+      const userData = await currentUser.json();
+      localStorage.setItem("image_url", userData.data.image_url);
 
       navigateTo("/register-success");
     } catch (error) {
       console.error("Upload avatar gagal:", error);
-      errorMessage.value = "Upload avatar gagal: Terjadi kesalahan server.";
+      errorMessage.value =
+        error.message || "Upload avatar gagal: Terjadi kesalahan server.";
       showAlert.value = true;
 
       setTimeout(() => {
