@@ -18,7 +18,7 @@
         </div>
       </div>
       <h2 class="font-normal mb-3 text-3xl text-white text-center">
-        Hi, Julia
+        Hi, {{ name }}
       </h2>
       <p class="text-white text-center font-light">Please upload your selfie</p>
       <div class="mb-4 mt-6">
@@ -46,6 +46,19 @@
 </template>
 
 <script setup>
+const token = ref(null);
+const name = ref(null);
+onMounted(() => {
+  token.value = localStorage.getItem("token");
+  name.value = localStorage.getItem("name");
+
+  // Deteksi perubahan token (misal saat login/logout di tab lain)
+  window.addEventListener("storage", () => {
+    token.value = localStorage.getItem("token");
+    name.value = localStorage.getItem("name");
+  });
+});
+
 definePageMeta({
   layout: "auth",
 });

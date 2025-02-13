@@ -69,7 +69,7 @@
 
 <script setup>
 // Import useAuth composable
-import { useAuth } from "~/composables/login";
+import { useAuth } from "~/composables/auth";
 
 // Extract values from the composable
 const { email, password, showAlert, errorMessage, login } = useAuth();

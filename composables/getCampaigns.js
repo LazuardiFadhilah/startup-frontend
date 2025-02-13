@@ -1,18 +1,35 @@
 export function useCampaigns() {
+  // State untuk menyimpan daftar campaign
   const campaigns = ref([]);
 
+  // Fungsi untuk mengambil data campaign dari API
   const getCampaignsData = async () => {
     try {
+      // Ambil user_id dari localStorage, jika tidak ada maka default ke 0
       const user_id = parseInt(localStorage.getItem("user_id")) || 0;
-      const response = await $fetch(
+
+      // Request pertama ke API menggunakan user_id dari localStorage
+      let response = await $fetch(
         `http://localhost:8080/api/v1/campaigns?user_id=${user_id}`
       );
-      console.log("Campaigns berhasil diambil:", response.data);
-      campaigns.value = response.data;
-      console.log("campaigns data from get Campaigns", campaigns.value);
+
+      // Jika response kosong, coba ambil ulang dengan user_id = 0
+      if (!response.data || response.data.length === 0) {
+        console.log(
+          "Campaigns tidak ditemukan, mencoba mengambil dengan data default"
+        );
+        response = await $fetch(
+          `http://localhost:8080/api/v1/campaigns?user_id=0`
+        );
+      }
+
+      // Simpan hasil response ke state campaigns
+      campaigns.value = response.data || [];
+
+      console.log("Campaigns berhasil diambil:", campaigns.value);
     } catch (error) {
-      console.error("Campaigns gagal diambil:", error);
-      campaigns.value = [];
+      console.error("Gagal mengambil campaign:", error);
+      campaigns.value = []; // Reset data jika terjadi error
     }
   };
 
