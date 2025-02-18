@@ -40,9 +40,11 @@
         </div>
       </div>
 
-      <!-- Fund Now Button -->
+      <!-- Fund Now Button 
+   
+      -->
       <nuxt-link
-        :to="`/projects/${campaign.id}`"
+        @click="handleProjectClick(campaign.id)"
         class="text-center mt-5 button-cta block w-full bg-orange-button hover:bg-green-button text-white font-semibold px-6 py-2 text-lg rounded-full"
       >
         Fund Now

@@ -56,8 +56,9 @@
             <div class="flex mt-3">
               <div class="w-1/4">
                 <img
-                  src="/testimonial-1-icon.png"
-                  alt="Leader"
+                  :src="`http://localhost:8080/${
+                    campaign?.user?.image_url || 'avatar.jpg'
+                  }`"
                   class="w-full inline-block rounded-full"
                 />
               </div>
@@ -82,14 +83,18 @@
             <!-- Funding Input & Button -->
             <input
               type="number"
+              v-model="amount"
               class="border border-gray-500 block w-full px-6 py-3 mt-4 rounded-full text-gray-800"
               placeholder="Amount in Rp"
             />
-            <nuxt-link
-              to="/fund-success"
+            <button
+              @click="postTransactions"
               class="text-center mt-3 button-cta block w-full bg-orange-button hover:bg-green-button text-white font-medium px-6 py-3 text-md rounded-full"
-              >Fund Now</nuxt-link
             >
+              Fund Now
+            </button>
+            <!-- Alert Error -->
+            <Alert :show="showAlert" :message="errorMessage" />
           </div>
         </div>
       </div>
@@ -151,10 +156,13 @@ import { useRoute } from "vue-router";
 import { useCampaign } from "~/composables/useCampaign";
 import { computed, onMounted, ref } from "vue";
 import { useCurrency } from "~/composables/useCurrency";
+import { transactions } from "~/composables/transaction";
 
 const route = useRoute();
 const { campaign, isLoading, fetchCampaignById } = useCampaign();
 const { formatCurrency, calculatePercentage } = useCurrency();
+const { amount, campaign_id, showAlert, errorMessage, postTransactions } =
+  transactions();
 
 // Gambar default jika campaign tidak memiliki gambar tambahan
 const defaultImages = ref([
@@ -181,5 +189,6 @@ const formattedCampaign = computed(() => {
 // Fetch campaign data saat komponen dimuat
 onMounted(() => {
   fetchCampaignById(route.params.id);
+  campaign_id.value = route.params.id;
 });
 </script>

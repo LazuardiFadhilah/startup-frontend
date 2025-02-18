@@ -83,6 +83,7 @@
           v-for="campaign in limitedCampaigns"
           :key="campaign.id"
           :campaign="campaign"
+          @click="handleProjectClick(campaign.id)"
         />
       </div>
     </section>
@@ -117,6 +118,24 @@ const { formatCurrency, calculatePercentage } = useCurrency();
 
 const viewAll = ref(false);
 const toggleViewAll = () => (viewAll.value = !viewAll.value);
+
+// Simulasi pengecekan login dari localStorage atau store
+const isAuthenticated = ref(false);
+
+// Cek login dari localStorage saat halaman dimuat
+onMounted(() => {
+  isAuthenticated.value = !!localStorage.getItem("token"); // Misal pakai token di localStorage
+});
+
+// Fungsi untuk menangani klik pada ProjectCard
+const handleProjectClick = (campaignId) => {
+  if (!isAuthenticated.value) {
+    alert("Anda harus login terlebih dahulu!");
+    navigateTo("/login"); // Redirect ke halaman login
+  } else {
+    navigateTo(`/projects/${campaignId}`); // Redirect ke halaman campaign detail
+  }
+};
 
 const formattedCampaigns = computed(() =>
   campaigns.value.map((campaign) => ({
