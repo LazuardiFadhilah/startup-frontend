@@ -23,44 +23,55 @@
             </li>
           </ul>
         </div>
-        <div class="w-1/4 text-right">
+        <div class="w-full text-right">
           <NuxtLink
             to="/dashboard/create"
-            class="bg-orange-button hover:bg-green-button text-white font-bold py-4 px-4 rounded inline-flex items-center"
+            class="bg-orange-button hover:bg-green-button text-white font-bold py-4 px-4 rounded items-center"
           >
             + Create Campaign
           </NuxtLink>
         </div>
       </div>
       <hr />
-      <div class="block mb-2">
-        <div class="w-full lg:max-w-full lg:flex mb-4" v-for="i in 5" :key="i">
+      <div class="block mb-2 mt-2 w-full">
+        <div
+          class="flex flex-row justify-between lg:w-full lg:flex mb-4 rounded-lg border-gray-400 border-2 p-[10px]"
+          v-for="campaign in campaigns"
+          :key="campaign.id"
+        >
           <div
-            class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
-            style="
-              background-image: url('https://tailwindcss.com/img/card-left.jpg');
-            "
+            class="basis-[20vw] bg-cover bg-center bg-no-repeat rounded-lg"
+            :style="{
+              backgroundImage: `url(${
+                campaign.image_url
+                  ? 'http://localhost:8080/' + campaign.image_url
+                  : 'https://tailwindcss.com/img/card-left.jpg'
+              })`,
+            }"
           ></div>
           <div
-            class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-8 flex flex-col justify-between leading-normal"
+            class="p-8 flex flex-auto flex-col justify-between leading-normal"
           >
             <div class="mb-8">
               <div class="text-gray-900 font-bold text-xl mb-1">
-                Cari Uang Buat Gunpla
+                {{ campaign.name }}
               </div>
               <p class="text-sm text-gray-600 flex items-center mb-2">
-                Rp. 200.000.000 &middot; 80%
+                {{ formatCurrency(campaign.goal_amount) }} &middot;
+                {{
+                  calculatePercentage(
+                    campaign.current_amount,
+                    campaign.goal_amount
+                  )
+                }}
               </p>
               <p class="text-gray-700 text-base">
-                With N-key rollover (NKRO on wired mode only) you can register
-                as many keys as you can press at once without missing out
-                characters. It allows to use all the same media keys as
-                conventional macOS.
+                {{ campaign.short_description }}
               </p>
             </div>
             <div class="flex items-center">
               <NuxtLink
-                :to="`/dashboard/projects/` + i"
+                :to="`/dashboard/projects/${campaign.id}`"
                 class="bg-green-button text-white py-2 px-4 rounded"
               >
                 Detail
@@ -75,3 +86,20 @@
     <Footer />
   </div>
 </template>
+
+<script setup>
+definePageMeta({
+  middleware: "auth",
+});
+
+import { useCampaigns } from "@/composables/getCampaigns"; // Pastikan path benar
+import { useCurrency } from "@/composables/useCurrency";
+import { onMounted } from "vue";
+
+const { campaigns, getCampaignsData } = useCampaigns();
+const { formatCurrency, calculatePercentage } = useCurrency();
+
+onMounted(() => {
+  getCampaignsData();
+});
+</script>
