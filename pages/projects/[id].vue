@@ -54,12 +54,12 @@
           >
             <h3>Project Leader:</h3>
             <div class="flex mt-3">
-              <div class="w-1/4">
+              <div>
                 <img
                   :src="`http://localhost:8080/${
                     campaign?.user?.image_url || 'avatar.jpg'
                   }`"
-                  class="w-full inline-block rounded-full"
+                  class="w-16 aspect-square object-cover rounded-full"
                 />
               </div>
               <div class="w-3/4 ml-5 mt-1">

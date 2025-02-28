@@ -61,7 +61,7 @@
             v-if="imageURL"
             :src="'http://localhost:8080/' + imageURL"
             alt=""
-            class="h-8 rounded-full mr-2"
+            class="h-8 w-8 rounded-full object-cover mr-2"
           />
           <span class="mr-1">{{ name }} </span>
           <svg
