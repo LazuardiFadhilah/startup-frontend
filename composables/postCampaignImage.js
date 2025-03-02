@@ -14,7 +14,7 @@ export function useCampaignImage() {
     const formData = new FormData();
     formData.append("campaign_id", campaignId);
     formData.append("is_primary", true);
-    formData.append("image", imageFile.value);
+    formData.append("file", imageFile.value);
 
     try {
       isUploading.value = true;
