@@ -27,7 +27,6 @@
         <h4 class="text-gray-900 font-bold text-xl mb-2">
           {{ campaign?.name }}
         </h4>
-
         <p class="text-sm font-bold mb-1">Description</p>
         <p class="text-gray-700 text-base mb-2">{{ campaign?.description }}</p>
 
@@ -47,12 +46,13 @@
       <!-- Gallery Section -->
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-2xl text-gray-900">Gallery</h3>
-        <a
-          href="#"
-          class="bg-green-button hover:bg-green-button text-white font-bold px-4 py-1 rounded inline-flex items-center"
-        >
-          Upload
-        </a>
+        <div>
+          <input
+            type="file"
+            @change="selectFile"
+            class="border p-1 rounded overflow-hidden"
+          />
+        </div>
       </div>
 
       <div class="flex -mx-2">
@@ -96,21 +96,31 @@
 </template>
 
 <script setup>
-// // Middleware for authentication
 definePageMeta({
   middleware: "auth",
 });
 
 import { useRoute } from "vue-router";
 import { useCampaign } from "@/composables/useCampaign";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useCurrency } from "@/composables/useCurrency";
 import { transactions } from "@/composables/transaction";
+import { useCampaignImage } from "@/composables/postCampaignImage";
 
 const route = useRoute();
 const { campaign, fetchCampaignById } = useCampaign();
 const { formatCurrency } = useCurrency();
 const { transactionsCampaign, getTransactionsByCampaign } = transactions();
+const { imageFile, postCampaignImage } = useCampaignImage();
+
+const selectFile = async (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    imageFile.value = file;
+    await postCampaignImage(route.params.id);
+    fetchCampaignById(route.params.id); // Refresh campaign data after upload
+  }
+};
 
 onMounted(() => {
   fetchCampaignById(route.params.id);
