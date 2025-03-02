@@ -16,7 +16,7 @@
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-2xl text-gray-900">Campaign Details</h3>
         <NuxtLink
-          to="/dashboard/projects/create"
+          :to="`/dashboard/projects/${campaign?.id}/edit`"
           class="bg-green-button hover:bg-green-button text-white font-bold px-4 py-1 rounded inline-flex items-center"
         >
           Edit
