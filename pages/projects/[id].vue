@@ -152,6 +152,11 @@
 </template>
 
 <script setup>
+// // Middleware for authentication
+definePageMeta({
+  middleware: "auth",
+});
+
 import { useRoute } from "vue-router";
 import { useCampaign } from "~/composables/useCampaign";
 import { computed, onMounted, ref } from "vue";

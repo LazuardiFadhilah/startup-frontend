@@ -2,15 +2,20 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 export function transactions() {
+  // State untuk menyimpan input transaksi
   const amount = ref("");
   const campaign_id = ref("");
   const paymentURL = ref("");
   const showAlert = ref(false);
   const errorMessage = ref("");
-  const router = useRouter(); // Vue Router untuk navigasi
+  const router = useRouter();
 
+  // State untuk menyimpan daftar transaksi user dan campaign
+  const transactionsUser = ref([]);
+  const transactionsCampaign = ref([]);
+
+  // Fungsi untuk melakukan transaksi
   const postTransactions = async () => {
-    // Ambil token dari localStorage atau state management
     const token = localStorage.getItem("token");
 
     // Validasi input sebelum request
@@ -30,17 +35,17 @@ export function transactions() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Tambahkan Auth Token
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            amount: Number(amount.value),
+            amount: Number(amount.value), // Pastikan amount dikonversi ke number
             campaign_id: Number(campaign_id.value),
           }),
         }
       );
 
       console.log("Transaksi berhasil:", response);
-      window.location.href = response.data.payment_url;
+      window.location.href = response.data.payment_url; // Redirect ke URL pembayaran
     } catch (error) {
       console.error("Transaksi gagal:", error);
       errorMessage.value =
@@ -52,6 +57,49 @@ export function transactions() {
     }
   };
 
+  // Fungsi untuk mendapatkan daftar transaksi user
+  const getTransactionsUser = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await $fetch(
+        "http://localhost:8080/api/v1/transactions/",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Transaksi user:", response);
+      transactionsUser.value = response.data;
+    } catch (error) {
+      console.log("Gagal mengambil transaksi user:", error);
+    }
+  };
+
+  // Fungsi untuk mendapatkan daftar transaksi berdasarkan campaign
+  const getTransactionsByCampaign = async (campaignId) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await $fetch(
+        `http://localhost:8080/api/v1/campaigns/${campaignId}/transactions`, // Hapus spasi berlebih
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Transaksi campaign:", response);
+      transactionsCampaign.value = response.data;
+    } catch (error) {
+      console.log("Gagal mengambil transaksi campaign:", error);
+    }
+  };
+
+  // Return semua state dan fungsi yang dapat digunakan
   return {
     amount,
     campaign_id,
@@ -59,5 +107,9 @@ export function transactions() {
     errorMessage,
     paymentURL,
     postTransactions,
+    transactionsUser,
+    getTransactionsUser,
+    transactionsCampaign,
+    getTransactionsByCampaign,
   };
 }
