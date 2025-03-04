@@ -32,7 +32,7 @@ export function transactions() {
     }
 
     try {
-      const response = await $fetch(`${apiBase}/transactions/`, {
+      const response = await $fetch(`${apiBase}/transactions`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -49,8 +49,9 @@ export function transactions() {
       window.location.href = response.data.payment_url; // Redirect ke URL pembayaran
     } catch (error) {
       console.error("Transaksi gagal:", error);
-      errorMessage.value =
-        "Transaksi gagal, periksa kembali data yang kamu input.";
+      (errorMessage.value =
+        "Transaksi gagal, periksa kembali data yang kamu input."),
+        error;
       showAlert.value = true;
       setTimeout(() => {
         showAlert.value = false;
@@ -62,7 +63,7 @@ export function transactions() {
   const getTransactionsUser = async () => {
     const token = localStorage.getItem("token");
     try {
-      const response = await $fetch(`${apiBase}/transactions/`, {
+      const response = await $fetch(`${apiBase}/transactions`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
