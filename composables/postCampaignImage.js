@@ -1,6 +1,9 @@
 import { ref } from "vue";
+import { useRuntimeConfig } from "#imports";
 
 export function useCampaignImage() {
+  const config = useRuntimeConfig();
+  const apiBase = config.public.API_BASE;
   const imageFile = ref(null);
   const isUploading = ref(false);
   const uploadError = ref("");
@@ -20,16 +23,13 @@ export function useCampaignImage() {
       isUploading.value = true;
       const token = localStorage.getItem("token");
 
-      const response = await fetch(
-        "http://localhost:8080/api/v1/campaign-images",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`, // Menggunakan token autentikasi
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch(`${apiBase}/campaign-images`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`, // Menggunakan token autentikasi
+        },
+        body: formData,
+      });
 
       console.log("Response upload:", response);
 

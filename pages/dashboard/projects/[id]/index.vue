@@ -63,7 +63,7 @@
         >
           <figure class="item-thumbnail">
             <img
-              :src="`http://localhost:8080/${image.image_url}`"
+              :src="`http://my-backend-production-2da4.up.railway.app/${image.image_url}`"
               alt="Campaign image"
               class="rounded w-full"
             />

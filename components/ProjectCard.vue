@@ -4,7 +4,10 @@
   >
     <figure class="item-image">
       <img
-        :src="'http://localhost:8080/' + campaign.image_url"
+        :src="
+          'http://my-backend-production-2da4.up.railway.app/' +
+          campaign.image_url
+        "
         alt=""
         class="rounded-20 w-full"
       />

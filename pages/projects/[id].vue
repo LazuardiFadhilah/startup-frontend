@@ -15,7 +15,7 @@
               <img
                 :src="
                   campaign?.image_url
-                    ? `http://localhost:8080/${campaign.image_url}`
+                    ? `http://my-backend-production-2da4.up.railway.app/${campaign.image_url}`
                     : '/project-image.jpg'
                 "
                 alt="Project Image"
@@ -35,7 +35,7 @@
             >
               <figure class="item-thumbnail">
                 <img
-                  :src="`http://localhost:8080/${
+                  :src="`http://my-backend-production-2da4.up.railway.app/${
                     imageObj.image_url || imageObj
                   }`"
                   alt="Thumbnail"
@@ -56,7 +56,7 @@
             <div class="flex mt-3">
               <div>
                 <img
-                  :src="`http://localhost:8080/${
+                  :src="`http://my-backend-production-2da4.up.railway.app/${
                     campaign?.user?.image_url || 'avatar.jpg'
                   }`"
                   class="w-16 aspect-square object-cover rounded-full"

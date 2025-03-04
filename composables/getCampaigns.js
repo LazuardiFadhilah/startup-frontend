@@ -1,4 +1,9 @@
+import { useRuntimeConfig } from "#imports";
+import { ref } from "vue";
+
 export function useCampaigns() {
+  const config = useRuntimeConfig();
+  const apiBase = config.public.API_BASE;
   // State untuk menyimpan daftar campaign
   const campaigns = ref([]);
 
@@ -9,18 +14,14 @@ export function useCampaigns() {
       const user_id = parseInt(localStorage.getItem("user_id")) || 0;
 
       // Request pertama ke API menggunakan user_id dari localStorage
-      let response = await $fetch(
-        `http://localhost:8080/api/v1/campaigns?user_id=${user_id}`
-      );
+      let response = await $fetch(`${apiBase}/campaigns?user_id=${user_id}`);
 
       // Jika response kosong, coba ambil ulang dengan user_id = 0
       if (!response.data || response.data.length === 0) {
         console.log(
           "Campaigns tidak ditemukan, mencoba mengambil dengan data default"
         );
-        response = await $fetch(
-          `http://localhost:8080/api/v1/campaigns?user_id=0`
-        );
+        response = await $fetch(`${apiBase}/campaigns?user_id=0`);
       }
 
       // Simpan hasil response ke state campaigns

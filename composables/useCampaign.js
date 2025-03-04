@@ -1,6 +1,9 @@
 import { ref } from "vue";
+import { useRuntimeConfig } from "#imports";
 
 export function useCampaign() {
+  const config = useRuntimeConfig();
+  const apiBase = config.public.API_BASE;
   const campaign = ref(null);
   const isLoading = ref(false);
   const error = ref(null);
@@ -10,9 +13,7 @@ export function useCampaign() {
     error.value = null; // Reset error sebelum melakukan fetch
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/v1/campaigns/${id}`
-      );
+      const response = await fetch(`${apiBase}/campaigns/${id}`);
 
       if (!response.ok) {
         throw new Error(`Failed to fetch campaign: ${response.statusText}`);

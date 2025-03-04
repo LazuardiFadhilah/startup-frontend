@@ -1,7 +1,10 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useRuntimeConfig } from "#imports";
 
 export function transactions() {
+  const config = useRuntimeConfig();
+  const apiBase = config.public.API_BASE;
   // State untuk menyimpan input transaksi
   const amount = ref("");
   const campaign_id = ref("");
@@ -29,20 +32,17 @@ export function transactions() {
     }
 
     try {
-      const response = await $fetch(
-        "http://localhost:8080/api/v1/transactions/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            amount: Number(amount.value), // Pastikan amount dikonversi ke number
-            campaign_id: Number(campaign_id.value),
-          }),
-        }
-      );
+      const response = await $fetch(`${apiBase}/v1/transactions/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          amount: Number(amount.value), // Pastikan amount dikonversi ke number
+          campaign_id: Number(campaign_id.value),
+        }),
+      });
 
       console.log("Transaksi berhasil:", response);
       window.location.href = response.data.payment_url; // Redirect ke URL pembayaran
@@ -61,16 +61,13 @@ export function transactions() {
   const getTransactionsUser = async () => {
     const token = localStorage.getItem("token");
     try {
-      const response = await $fetch(
-        "http://localhost:8080/api/v1/transactions/",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await $fetch(`${apiBase}/transactions/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log("Transaksi user:", response);
       transactionsUser.value = response.data;
     } catch (error) {
@@ -83,7 +80,7 @@ export function transactions() {
     const token = localStorage.getItem("token");
     try {
       const response = await $fetch(
-        `http://localhost:8080/api/v1/campaigns/${campaignId}/transactions`, // Hapus spasi berlebih
+        `${apiBase}/campaigns/${campaignId}/transactions`, // Hapus spasi berlebih
         {
           method: "GET",
           headers: {

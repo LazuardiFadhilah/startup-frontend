@@ -1,6 +1,9 @@
 import { ref } from "vue";
+import { useRuntimeConfig } from "#imports";
 
 export function useAuth() {
+  const config = useRuntimeConfig();
+  const apiBase = config.public.API_BASE;
   // State untuk menyimpan input user
   const email = ref("");
   const password = ref("");
@@ -14,7 +17,7 @@ export function useAuth() {
   // Fungsi untuk menangani login
   const login = async () => {
     try {
-      const response = await $fetch("http://localhost:8080/api/v1/sessions", {
+      const response = await $fetch(`${apiBase}/sessions`, {
         method: "POST",
         body: {
           email: email.value,
@@ -51,7 +54,7 @@ export function useAuth() {
   // Fungsi untuk menangani registrasi
   const register = async () => {
     try {
-      const response = await $fetch("http://localhost:8080/api/v1/users", {
+      const response = await $fetch(`${apiBase}/users`, {
         method: "POST",
         body: {
           name: name.value,

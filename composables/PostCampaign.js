@@ -1,7 +1,10 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useRuntimeConfig } from "#imports";
 
 export function usePostCampaign() {
+  const config = useRuntimeConfig();
+  const apiBase = config.public.API_BASE;
   // State untuk form campaign
   const name = ref("");
   const description = ref("");
@@ -18,7 +21,7 @@ export function usePostCampaign() {
   const createCampaign = async () => {
     const token = localStorage.getItem("token");
     try {
-      const response = await $fetch("http://localhost:8080/api/v1/campaigns", {
+      const response = await $fetch(`${apiBase}/campaigns`, {
         method: "POST",
         body: {
           name: name.value,

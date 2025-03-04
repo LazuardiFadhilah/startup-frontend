@@ -1,9 +1,12 @@
 import { ref } from "vue";
+import { useRuntimeConfig } from "#imports";
 
 const isLoading = ref(false);
 const errorMessage = ref("");
 
 async function editCampaign(id, updatedData) {
+  const config = useRuntimeConfig();
+  const apiBase = config.public.API_BASE;
   isLoading.value = true;
   errorMessage.value = "";
 
@@ -11,17 +14,14 @@ async function editCampaign(id, updatedData) {
     const token = localStorage.getItem("token");
     if (!token) throw new Error("Unauthorized - No Token Found");
 
-    const response = await fetch(
-      `http://localhost:8080/api/v1/campaigns/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedData),
-      }
-    );
+    const response = await fetch(`${apiBase}/campaigns/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    });
 
     if (!response.ok) {
       const errorData = await response.json();

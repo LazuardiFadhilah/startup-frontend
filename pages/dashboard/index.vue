@@ -54,7 +54,8 @@
             :style="{
               backgroundImage: `url(${
                 campaign.image_url
-                  ? 'http://localhost:8080/' + campaign.image_url
+                  ? 'http://my-backend-production-2da4.up.railway.app/' +
+                    campaign.image_url
                   : 'https://tailwindcss.com/img/card-left.jpg'
               })`,
             }"

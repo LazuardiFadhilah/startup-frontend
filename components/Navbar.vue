@@ -59,7 +59,9 @@
         >
           <img
             v-if="imageURL"
-            :src="'http://localhost:8080/' + imageURL"
+            :src="
+              'http://my-backend-production-2da4.up.railway.app/' + imageURL
+            "
             alt=""
             class="h-8 w-8 rounded-full object-cover mr-2"
           />

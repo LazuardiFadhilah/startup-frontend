@@ -1,5 +1,7 @@
 import CredentialsProvider from "@auth/core/providers/credentials";
-
+import { useRuntimeConfig } from "#imports";
+const config = useRuntimeConfig();
+const apiBase = config.public.API_BASE;
 export default defineAuthConfig({
   providers: [
     CredentialsProvider({
@@ -14,7 +16,7 @@ export default defineAuthConfig({
       },
       async authorize(credentials) {
         try {
-          const res = await $fetch("http://localhost:8080/api/v1/sessions", {
+          const res = await $fetch(`${apiBase}/sessions`, {
             method: "POST",
             body: credentials,
           });

@@ -16,10 +16,10 @@ export const useCurrency = () => {
   return { formatCurrency, calculatePercentage };
 };
 
-  export function formatDate(dateString) {
-    return new Intl.DateTimeFormat("id-ID", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    }).format(new Date(dateString));
-  }
+export function formatDate(dateString) {
+  return new Intl.DateTimeFormat("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(dateString));
+}

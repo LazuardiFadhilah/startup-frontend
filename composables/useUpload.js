@@ -1,6 +1,9 @@
 import { ref } from "vue";
+import { useRuntimeConfig } from "#imports";
 
 export function useUpload() {
+  const config = useRuntimeConfig();
+  const apiBase = config.public.API_BASE;
   const selectedFile = ref(null);
   const previewImage = ref(null);
   const showAlert = ref(false);
@@ -30,7 +33,7 @@ export function useUpload() {
       const formData = new FormData();
       formData.append("avatar", selectedFile.value); // Sesuaikan dengan backend
 
-      const response = await fetch("http://localhost:8080/api/v1/avatars", {
+      const response = await fetch(`${apiBase}/avatars`, {
         method: "POST",
         body: formData,
         headers: {
@@ -48,15 +51,12 @@ export function useUpload() {
       console.log("Upload avatar berhasil:", result);
 
       // Fetch data user setelah upload berhasil
-      const currentUser = await fetch(
-        "http://localhost:8080/api/v1/users/fetch",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const currentUser = await fetch(`${apiBase}/users/fetch`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
       if (!currentUser.ok) {
         throw new Error("Gagal mengambil data user terbaru");

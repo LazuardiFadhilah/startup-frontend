@@ -4,6 +4,11 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxtjs/tailwindcss"],
 
+  runtimeConfig: {
+    public: {
+      API_BASE: "https://my-backend-production-2da4.up.railway.app/api/v1",
+    },
+  },
   app: {
     baseURL: "/",
     head: {
