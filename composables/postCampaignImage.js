@@ -28,6 +28,7 @@ export function useCampaignImage() {
         headers: {
           Authorization: `Bearer ${token}`, // Menggunakan token autentikasi
         },
+        credentials: "include",
         body: formData,
       });
 

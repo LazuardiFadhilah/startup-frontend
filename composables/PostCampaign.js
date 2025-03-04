@@ -34,6 +34,7 @@ export function usePostCampaign() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
       });
 
       console.log("Campaign berhasil dibuat:", response.data);

@@ -20,6 +20,7 @@ async function editCampaign(id, updatedData) {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(updatedData),
     });
 

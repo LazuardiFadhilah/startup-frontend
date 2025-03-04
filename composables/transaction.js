@@ -38,6 +38,7 @@ export function transactions() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
         body: JSON.stringify({
           amount: Number(amount.value), // Pastikan amount dikonversi ke number
           campaign_id: Number(campaign_id.value),
@@ -67,6 +68,7 @@ export function transactions() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
       });
       console.log("Transaksi user:", response);
       transactionsUser.value = response.data;
@@ -87,6 +89,7 @@ export function transactions() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
+          credentials: "include",
         }
       );
       console.log("Transaksi campaign:", response);

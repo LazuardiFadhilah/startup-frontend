@@ -39,6 +39,7 @@ export function useUpload() {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
+        credentials: "include",
       });
 
       //   // Pastikan response status benar sebelum memproses lebih lanjut
@@ -56,6 +57,7 @@ export function useUpload() {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
+        credentials: "include",
       });
 
       if (!currentUser.ok) {
