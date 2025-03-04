@@ -4,26 +4,30 @@
       <div class="header__bg"></div>
       <div class="container mx-auto relative">
         <Navbar />
-        <div class="flex items-center pt-10 px-5 md:px-0">
-          <div class="w-1/2">
-            <h1 class="text-4xl text-white mb-5">
+        <div class="flex flex-col md:flex-row items-center pt-10 px-5 md:px-0">
+          <div class="w-full md:w-1/2 text-center md:text-left">
+            <h1 class="text-3xl md:text-4xl text-white mb-5">
               We helps <u class="hero-underline">startup</u> to <br />
               getting started & <u class="hero-underline">funding</u> <br />
               their truly needs
             </h1>
-            <p class="text-white text-xl font-light mb-8">
+            <p class="text-white text-lg md:text-xl font-light mb-8">
               Fund the best idea to become <br />
               a real product and be the contributor
             </p>
             <button
               @click="$router.push({ path: '/' })"
-              class="block bg-orange-button hover:bg-green-button text-white font-semibold px-12 py-3 text-xl rounded-full"
+              class="block bg-orange-button hover:bg-green-button text-white font-semibold px-6 md:px-12 py-3 text-lg md:text-xl rounded-full"
             >
               Find a Project
             </button>
           </div>
-          <div class="w-1/2 flex justify-center">
-            <img src="/hero-image@2x.png" alt="crowdfunding project" />
+          <div class="w-full md:w-1/2 flex justify-center mt-5 md:mt-0">
+            <img
+              src="/hero-image@2x.png"
+              alt="crowdfunding project"
+              class="max-w-full h-auto"
+            />
           </div>
         </div>
       </div>
@@ -31,20 +35,18 @@
 
     <!-- Steps Section -->
     <section class="container mx-auto pt-24">
-      <div class="flex justify-between items-center mb-10">
+      <div class="text-center mb-10">
         <h2 class="text-3xl text-gray-900 mb-8">
           Only 3 steps to execute <br />
           your bright ideas
         </h2>
       </div>
 
-      <div class="flex">
-        <div class="w-full px-56 mb-5">
-          <img src="/line-step.svg" alt="" class="w-full" />
-        </div>
+      <div class="w-full px-5 md:px-56 mb-5">
+        <img src="/line-step.svg" alt="" class="w-full" />
       </div>
 
-      <div class="flex justify-between items-center text-center">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
         <StepItem
           imgSrc="/step-1-illustration.svg"
           title="Sign Up"
@@ -65,7 +67,7 @@
 
     <!-- Projects Section -->
     <section class="container mx-auto pt-24">
-      <div class="flex justify-between items-center">
+      <div class="flex flex-col md:flex-row justify-between items-center">
         <h2 class="text-3xl text-gray-900 mb-8">
           New projects you can <br />
           take care of
@@ -78,7 +80,7 @@
         </button>
       </div>
 
-      <div class="grid grid-cols-3 gap-4 mt-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-3">
         <ProjectCard
           v-for="campaign in limitedCampaigns"
           :key="campaign.id"
@@ -90,12 +92,12 @@
 
     <!-- Testimonial Section -->
     <section class="container mx-auto pt-24">
-      <div class="flex justify-between items-center">
+      <div class="text-center mb-10">
         <h2 class="text-3xl text-gray-900 mb-8">
-          See What Our <br />Happy Clients Say
+          See What Our <br />
+          Happy Clients Say
         </h2>
       </div>
-
       <TestimonialSection />
     </section>
 
@@ -119,21 +121,18 @@ const { formatCurrency, calculatePercentage } = useCurrency();
 const viewAll = ref(false);
 const toggleViewAll = () => (viewAll.value = !viewAll.value);
 
-// Simulasi pengecekan login dari localStorage atau store
 const isAuthenticated = ref(false);
 
-// Cek login dari localStorage saat halaman dimuat
 onMounted(() => {
-  isAuthenticated.value = !!localStorage.getItem("token"); // Misal pakai token di localStorage
+  isAuthenticated.value = !!localStorage.getItem("token");
 });
 
-// Fungsi untuk menangani klik pada ProjectCard
 const handleProjectClick = (campaignId) => {
   if (!isAuthenticated.value) {
     alert("Anda harus login terlebih dahulu!");
-    navigateTo("/login"); // Redirect ke halaman login
+    navigateTo("/login");
   } else {
-    navigateTo(`/projects/${campaignId}`); // Redirect ke halaman campaign detail
+    navigateTo(`/projects/${campaignId}`);
   }
 };
 

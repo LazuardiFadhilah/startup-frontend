@@ -32,7 +32,7 @@ export function transactions() {
     }
 
     try {
-      const response = await $fetch(`${apiBase}/v1/transactions/`, {
+      const response = await $fetch(`${apiBase}/transactions/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
