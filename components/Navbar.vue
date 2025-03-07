@@ -42,8 +42,8 @@
       </li>
     </ul>
 
-    <!-- Foto Profil User (Kanan) -->
-    <div class="relative bg-white rounded-md py-2 px-2">
+    <!-- Foto Profil User (Kanan) - Muncul hanya jika login -->
+    <div v-if="isLoggedIn" class="relative bg-white rounded-md py-2 px-2">
       <button
         @click="toggleDropdown"
         class="flex items-center text-black focus:outline-none"
@@ -90,6 +90,22 @@
           >
         </li>
       </ul>
+    </div>
+
+    <!-- Jika belum login, tampilkan tombol "Sign Up" dan "Login" -->
+    <div v-else class="flex space-x-4">
+      <nuxt-link
+        to="/register"
+        class="bg-transparent border border-white text-white px-4 py-2 rounded-full hover:bg-white hover:text-gray-800 transition"
+      >
+        Sign Up
+      </nuxt-link>
+      <nuxt-link
+        to="/login"
+        class="bg-white text-gray-800 px-4 py-2 rounded-full hover:bg-gray-300 transition"
+      >
+        Login
+      </nuxt-link>
     </div>
 
     <!-- Menu Mobile -->
