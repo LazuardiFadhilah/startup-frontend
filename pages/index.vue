@@ -17,7 +17,7 @@
             </p>
             <button
               @click="$router.push({ path: '/' })"
-              class="block bg-orange-button hover:bg-green-button text-white font-semibold px-6 md:px-12 py-3 text-lg md:text-xl justify-items-center lg:justify-items-start rounded-full"
+              class="block bg-orange-button hover:bg-green-button text-white font-semibold px-6 md:px-12 py-3 text-lg md:text-xl flex justify-start md:justfiy-center rounded-full"
             >
               Find a Project
             </button>
