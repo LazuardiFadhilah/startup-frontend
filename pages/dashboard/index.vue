@@ -123,6 +123,6 @@ const { formatCurrency, calculatePercentage } = useCurrency();
 
 // Load campaign data on component mount
 onMounted(() => {
-  getCampaignsData();
+  getCampaignData();
 });
 </script>
