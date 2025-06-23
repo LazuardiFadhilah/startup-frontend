@@ -15,21 +15,17 @@
 
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-2xl text-gray-900">Campaign Details</h3>
-        <NuxtLink
+       <div class="flex-row gap-4">
+         <NuxtLink
           :to="`/dashboard/projects/${campaign?.id}/edit`"
           class="bg-green-button hover:bg-green-button text-white font-bold px-4 py-1 rounded inline-flex items-center"
         >
           Edit
         </NuxtLink>
-      </div>
-       <div class="flex justify-between items-center mb-4">
-        <h3 class="text-2xl text-gray-900">Campaign Details</h3>
-        <NuxtLink
-          :to="`/dashboard/projects/${campaign?.id}/edit`"
-          class="bg-green-button hover:bg-green-button text-white font-bold px-4 py-1 rounded inline-flex items-center"
-        >
-          Edit
-        </NuxtLink>
+        <div class="bg-red-500 hover:bg-red-600 text-white font-bold px-4 py-1 rounded inline-flex items-center cursor-pointer">
+          Delete
+        </div>
+       </div>
       </div>
 
       <div class="border border-gray-400 bg-white rounded p-8 mb-4">
