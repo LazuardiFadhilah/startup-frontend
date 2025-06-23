@@ -27,7 +27,7 @@
       <!-- Progress Bar -->
       <div class="relative pt-4 progress-bar">
         <div
-          class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200 h-3 rounded-lg"
+          class="overflow-hidden mb-4 text-xs flex bg-gray-200 h-3 rounded-lg"
         >
           <div
             :style="{ width: campaign.fundingPercentage }"

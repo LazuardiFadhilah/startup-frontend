@@ -66,7 +66,7 @@
       <!-- Dropdown User -->
       <ul
         v-if="isDropdownVisible"
-        class="absolute right-0 mt-2 w-48 bg-white lg:bg-white bg-gray-800 text-gray-800 text-black shadow-md rounded z-50 transition-all duration-300"
+        class="absolute right-0 mt-2 w-48 bg-white lg:bg-white text-black shadow-md rounded z-50 transition-all duration-300"
       >
         <li>
           <nuxt-link
