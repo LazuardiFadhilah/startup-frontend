@@ -118,7 +118,7 @@ import { useCurrency } from "@/composables/useCurrency";
 import { onMounted } from "vue";
 
 // Fetch campaign data
-const { campaigns, getCampaignsData } = useCampaigns();
+const { campaigns, getCampaignsData, getCampaignData } = useCampaigns();
 const { formatCurrency, calculatePercentage } = useCurrency();
 
 // Load campaign data on component mount
