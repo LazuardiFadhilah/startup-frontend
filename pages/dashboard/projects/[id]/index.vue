@@ -15,16 +15,17 @@
 
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-2xl text-gray-900">Campaign Details</h3>
-       <div class="flex-row gap-4">
+       <div class="flex-row">
          <NuxtLink
           :to="`/dashboard/projects/${campaign?.id}/edit`"
           class="bg-green-button hover:bg-green-button text-white font-bold px-4 py-1 rounded inline-flex items-center"
         >
           Edit
         </NuxtLink>
-        <div class="bg-red-500 hover:bg-red-600 text-white font-bold px-4 py-1 rounded inline-flex items-center cursor-pointer">
+          <button @click="handleDeleteCampaign(route.params.id)" class=" ml-2 bg-red-500 hover:bg-red-600 text-white font-bold px-4 py-1 rounded inline-flex items-center cursor-pointer">
           Delete
-        </div>
+        </button>
+        
        </div>
       </div>
 
@@ -113,7 +114,7 @@ import { transactions } from "@/composables/transaction";
 import { useCampaignImage } from "@/composables/postCampaignImage";
 
 const route = useRoute();
-const { campaign, fetchCampaignById } = useCampaign();
+const { campaign, fetchCampaignById, deleteCampaign } = useCampaign();
 const { formatCurrency } = useCurrency();
 const { transactionsCampaign, getTransactionsByCampaign } = transactions();
 const { imageFile, postCampaignImage } = useCampaignImage();
@@ -124,6 +125,12 @@ const selectFile = async (event) => {
     imageFile.value = file;
     await postCampaignImage(route.params.id);
     fetchCampaignById(route.params.id); // Refresh campaign data after upload
+  }
+};
+
+const handleDeleteCampaign = async (id) => {
+  if (confirm("Apakah anda yakin ingin menghapus campaign ini?")) {
+    await deleteCampaign(route.params.id);
   }
 };
 

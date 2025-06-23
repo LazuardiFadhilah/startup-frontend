@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import { useRuntimeConfig } from "#imports";
+import { useRouter } from "vue-router";
 
 export function useCampaign() {
   const config = useRuntimeConfig();
@@ -7,6 +8,7 @@ export function useCampaign() {
   const campaign = ref(null);
   const isLoading = ref(false);
   const error = ref(null);
+  const router = useRouter();
 
   const fetchCampaignById = async (id) => {
     isLoading.value = true;
@@ -29,5 +31,24 @@ export function useCampaign() {
     }
   };
 
-  return { campaign, isLoading, error, fetchCampaignById };
+
+  const deleteCampaign = async(campaignId) => {
+    try {
+      const token = localStorage.getItem("token");
+      await $fetch(`${apiBase}/campaigns/${campaignId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      });
+      console.log(`Campaign dengan ID ${campaignId} berhasil dihapus.`);
+
+      router.push("/dashboard");
+    } catch (error) {
+      console.error(`Gagal menghapus campaign dengan ID ${campaignId}:`, error);
+      
+    }
+  }
+
+  return { campaign, isLoading, error, fetchCampaignById, deleteCampaign };
 }

@@ -34,18 +34,9 @@ export function useCampaigns() {
     }
   };
 
-   const getCampaignsData = async () => {
+  const getCampaignsData = async () => {
     try {
-      // Request pertama ke API menggunakan user_id dari localStorage
       let response = await $fetch(`${apiBase}/campaigns?user_id=0`);
-
-      // Jika response kosong, coba ambil ulang dengan user_id = 0
-      // if (!response.data || response.data.length === 0) {
-      //   console.log(
-      //     "Campaigns tidak ditemukan, mencoba mengambil dengan data default"
-      //   );
-      //   response = await $fetch(`${apiBase}/campaigns?user_id=0`);
-      // }
 
       // Simpan hasil response ke state campaigns
       campaigns.value = response.data || [];
@@ -56,5 +47,7 @@ export function useCampaigns() {
       campaigns.value = []; // Reset data jika terjadi error
     }
   };
-  return { campaigns, getCampaignsData, getCampaignData };
+
+
+  return { campaigns, getCampaignsData, getCampaignData};
 }
